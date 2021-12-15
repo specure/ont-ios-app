@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "loop_black_24dp.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}
