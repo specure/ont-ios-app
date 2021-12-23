@@ -30,7 +30,9 @@ class RMBTHomeViewController: TopLevelViewController {
     @IBOutlet weak var heroHeight: NSLayoutConstraint!
     @IBOutlet weak var detailsButton: UIButton!
     @IBOutlet weak var loopModeIndicator: UIButton!
-
+    @IBOutlet weak var heroBottom: NSLayoutConstraint!
+    @IBOutlet weak var heroImage: UIImageView!
+    
     internal var connectivityTracker: RMBTConnectivityTracker?
     private var location: String?
     private var networkLocation: String?
@@ -76,6 +78,7 @@ class RMBTHomeViewController: TopLevelViewController {
             logoBottomMargin.constant = 70
             heroHeight.constant = 100
         }
+        setHeroSizeAndMargin(size: UIScreen.main.bounds.size)
         
         if RMBT_TEST_LOOPMODE_ENABLE == false {
             loopModeSwitchButton.isHidden = true
@@ -83,6 +86,11 @@ class RMBTHomeViewController: TopLevelViewController {
         }
         
         updateLoopModeSwitcher()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setHeroSizeAndMargin(size: size)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -133,6 +141,17 @@ class RMBTHomeViewController: TopLevelViewController {
         networkInfoView.layer.shadowOffset = CGSize(width: 0, height: 2)
         networkInfoView.layer.cornerRadius = 16
         detailsButton.tintColor = RMBTColorManager.tintLightColor
+    }
+    
+    private func setHeroSizeAndMargin(size: CGSize) {
+        guard UIDevice.isDeviceTablet() else {return}
+        if size.width > size.height {
+            heroHeight.constant = UIScreen.main.bounds.width / 3
+            heroBottom.constant = -(heroHeight.constant - UIScreen.main.bounds.height / 3) + 25 * (size.width / size.height)
+        } else {
+            heroHeight.constant = UIScreen.main.bounds.height / 3
+            heroBottom.constant = -(heroHeight.constant - UIScreen.main.bounds.width / 3) + 25 * (size.height / size.width)
+        }
     }
     
     func setTexts() {
