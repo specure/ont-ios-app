@@ -154,6 +154,10 @@ class RMBTTestViewController: TopLevelViewController {
         }
     }
     
+    var isLandscape: Bool {
+        return UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height
+    }
+    
     func showStateResult() {
         self.isShowResult = true
         self.currentResultView.isEmpty = false
@@ -269,7 +273,7 @@ class RMBTTestViewController: TopLevelViewController {
         super.viewWillLayoutSubviews()
         
 //        self.currentResultView.superview?.constraint(with: "centerY")?.priority = .defaultHigh
-        if UIApplication.shared.statusBarOrientation.isLandscape && UIDevice.isDeviceTablet() == false {
+        if UIApplication.shared.statusBarOrientation.isLandscape && !UIDevice.isDeviceTablet() {
             self.testButtonAreaWidthConstraint.priority = .defaultHigh
             self.testButtonAreaRightConstraint.priority = .defaultLow
             self.systemInfoLeftConstraint.priority = .defaultLow
@@ -315,8 +319,11 @@ class RMBTTestViewController: TopLevelViewController {
                 statesHeight += self.advertisingContainer.frameHeight
             }
             
-            let padding = (screenHeight / 2 - statesHeight) / 2
-            self.systemInfoTopPortraitConstraint.constant = padding
+            if isLandscape {
+                self.systemInfoTopPortraitConstraint.constant = 0
+            } else {
+                self.systemInfoTopPortraitConstraint.constant = (screenHeight / 2 - statesHeight) / 2
+            }
         } else {
             if UIApplication.shared.statusBarOrientation.isPortrait {
                 let height = screenHeight / 2
@@ -337,7 +344,7 @@ class RMBTTestViewController: TopLevelViewController {
             let height = self.currentResultView.constraint(with: UIView.ConstraintIdentifier.height.rawValue)
             
             let screenHeight = self.view.frameHeight - self.changeServerBackgroundView.frameHeight
-            var size: CGFloat = 310
+            var size: CGFloat = isLandscape ? 250 : 310
             if size > screenHeight / 2 - 10 {
                 size = screenHeight / 2 - 10
             }
@@ -345,7 +352,7 @@ class RMBTTestViewController: TopLevelViewController {
             height?.constant = size
             let titleFont = UIFont.systemFont(ofSize: 28, weight: .semibold)
             let subtitleFont = UIFont.systemFont(ofSize: 24, weight: .semibold)
-            let textFont = UIFont.systemFont(ofSize: 88, weight: .ultraLight)
+            let textFont = UIFont.systemFont(ofSize: isLandscape ? 72 : 88, weight: .ultraLight)
             self.currentResultView.titleLabel?.font = titleFont
             self.currentResultView.subtitleLabel?.font = subtitleFont
             self.currentResultView.valueLabel?.font = textFont
