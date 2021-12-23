@@ -269,7 +269,7 @@ class RMBTTestViewController: TopLevelViewController {
         super.viewWillLayoutSubviews()
         
 //        self.currentResultView.superview?.constraint(with: "centerY")?.priority = .defaultHigh
-        if UIApplication.shared.statusBarOrientation.isLandscape && UIDevice.isDeviceTablet() == false {
+        if UIApplication.shared.statusBarOrientation.isLandscape && !UIDevice.isDeviceTablet() {
             self.testButtonAreaWidthConstraint.priority = .defaultHigh
             self.testButtonAreaRightConstraint.priority = .defaultLow
             self.systemInfoLeftConstraint.priority = .defaultLow
@@ -315,8 +315,11 @@ class RMBTTestViewController: TopLevelViewController {
                 statesHeight += self.advertisingContainer.frameHeight
             }
             
-            let padding = (screenHeight / 2 - statesHeight) / 2
-            self.systemInfoTopPortraitConstraint.constant = padding
+            if UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height {
+                self.systemInfoTopPortraitConstraint.constant = (screenHeight / 2 - statesHeight) / 2
+            } else {
+                self.systemInfoTopPortraitConstraint.constant = self.detailedResultsView.frameHeight
+            }
         } else {
             if UIApplication.shared.statusBarOrientation.isPortrait {
                 let height = screenHeight / 2
