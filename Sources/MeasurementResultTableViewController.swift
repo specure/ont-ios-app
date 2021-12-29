@@ -18,7 +18,6 @@ import Foundation
 import UIKit
 import CoreLocation
 import RMBTClient
-import GoogleMaps
 
 ///
 class MeasurementResultTableViewController: UITableViewController {

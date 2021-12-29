@@ -17,7 +17,6 @@
 
 import Foundation
 import MessageUI
-import GoogleMaps
 import RMBTClient
 
 ///
@@ -188,7 +187,6 @@ class InfoViewController: TopLevelTableViewController {
         let configuration = RMBTConfiguration
         if segue.identifier == "show_google_maps_notice" {
             if let textVC = segue.destination as? InfoTextViewController {
-                textVC.text = GMSServices.openSourceLicenseInfo()
                 textVC.title = L("info.google-maps.legal-notice")
             }
         }

@@ -16,7 +16,6 @@
  *****************************************************************************************************/
 
 import Foundation
-import GoogleMaps
 import RMBTClient
 import Firebase
 import RealmSwift
@@ -39,8 +38,6 @@ final class RMBTAppDelegate: UIResponder, UIApplicationDelegate {
         if RMBTSettings.sharedSettings.isAnalyticsEnabled {
             GADMobileAds.sharedInstance().start(completionHandler: nil)
             FirebaseApp.configure()
-
-            GMSServices.provideAPIKey(RMBTConfiguration.RMBT_GMAPS_API_KEY)
             LogConfig.initLoggingFramework()
         }
         
