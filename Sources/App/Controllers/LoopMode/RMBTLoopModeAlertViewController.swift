@@ -31,7 +31,9 @@ class RMBTLoopModeAlertViewController: TopLevelViewController {
         
         self.title = L("loopmode.test.init.title")
         self.itemsTableView.register(cell: RMBTLoopModeAlertCell.ID)
-        self.itemsTableView.estimatedRowHeight = 10
+        self.itemsTableView.estimatedRowHeight = 52
+        self.itemsTableView.estimatedSectionFooterHeight = 0
+        self.itemsTableView.estimatedSectionHeaderHeight = 0
         self.itemsTableView.rowHeight = UITableView.automaticDimension
         self.itemsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         

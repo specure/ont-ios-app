@@ -1014,26 +1014,21 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8og-1d-Dhh">
-                                        <rect key="frame" x="291" y="539" width="70" height="31"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8og-1d-Dhh">
+                                        <rect key="frame" x="281" y="530" width="70" height="31"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="70" id="4Bf-Oe-JWt"/>
-                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="31" id="712-Kp-Nt5"/>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="70" id="9mn-FC-sKh"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="d8I-VK-asN"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="4Bf-Oe-JWt"/>
                                             <constraint firstAttribute="height" constant="31" id="yjg-MA-27H"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="z8G-VQ-uaf"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="I Agree"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Llq-Nb-3F7">
-                                        <rect key="frame" x="14" y="539" width="80" height="31"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Llq-Nb-3F7">
+                                        <rect key="frame" x="24" y="530" width="80" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="31" id="T3q-zm-9zn"/>
-                                            <constraint firstAttribute="width" constant="80" id="WE3-K1-e3w"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="dom-eL-7ZF"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="WE3-K1-e3w"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -1044,17 +1039,17 @@
                                     <constraint firstAttribute="trailing" secondItem="4mc-OH-ISS" secondAttribute="trailing" constant="40" id="0c7-g6-XiP"/>
                                     <constraint firstItem="4mc-OH-ISS" firstAttribute="leading" secondItem="Hmo-tB-FCK" secondAttribute="leading" constant="40" id="6jG-9t-mmh"/>
                                     <constraint firstItem="YTG-tA-kj2" firstAttribute="top" secondItem="4mc-OH-ISS" secondAttribute="bottom" constant="10" id="CbO-vC-NRu"/>
-                                    <constraint firstAttribute="bottom" secondItem="YTG-tA-kj2" secondAttribute="bottom" constant="20" id="DiY-2Y-Jin"/>
-                                    <constraint firstItem="YTG-tA-kj2" firstAttribute="bottom" secondItem="Llq-Nb-3F7" secondAttribute="bottom" constant="-40" id="Mvc-8z-bfz"/>
+                                    <constraint firstAttribute="bottom" secondItem="YTG-tA-kj2" secondAttribute="bottom" constant="48" id="DiY-2Y-Jin"/>
+                                    <constraint firstItem="YTG-tA-kj2" firstAttribute="bottom" secondItem="Llq-Nb-3F7" secondAttribute="top" id="Mvc-8z-bfz"/>
                                     <constraint firstItem="Ibt-Mm-EtY" firstAttribute="width" secondItem="Hmo-tB-FCK" secondAttribute="width" constant="-40" id="PH9-2M-frg"/>
                                     <constraint firstItem="Ibt-Mm-EtY" firstAttribute="leading" secondItem="Hmo-tB-FCK" secondAttribute="leading" constant="20" id="YeC-Of-d4e"/>
-                                    <constraint firstAttribute="trailing" secondItem="8og-1d-Dhh" secondAttribute="trailing" constant="14" id="c5v-Xp-muO"/>
+                                    <constraint firstAttribute="trailing" secondItem="8og-1d-Dhh" secondAttribute="trailing" constant="24" id="c5v-Xp-muO"/>
                                     <constraint firstItem="YTG-tA-kj2" firstAttribute="leading" secondItem="Hmo-tB-FCK" secondAttribute="leading" constant="20" id="fmh-zM-lZ0"/>
                                     <constraint firstAttribute="trailing" secondItem="Ibt-Mm-EtY" secondAttribute="trailing" constant="20" id="j2X-JJ-ZpU"/>
                                     <constraint firstItem="4mc-OH-ISS" firstAttribute="top" secondItem="Ibt-Mm-EtY" secondAttribute="bottom" constant="10" id="jQo-1s-Uiz"/>
-                                    <constraint firstItem="Llq-Nb-3F7" firstAttribute="leading" secondItem="Hmo-tB-FCK" secondAttribute="leading" constant="14" id="miI-Ps-VYh"/>
+                                    <constraint firstItem="Llq-Nb-3F7" firstAttribute="leading" secondItem="Hmo-tB-FCK" secondAttribute="leading" constant="24" id="miI-Ps-VYh"/>
                                     <constraint firstAttribute="trailing" secondItem="YTG-tA-kj2" secondAttribute="trailing" constant="20" id="tm5-oI-LNE"/>
-                                    <constraint firstItem="YTG-tA-kj2" firstAttribute="bottom" secondItem="8og-1d-Dhh" secondAttribute="bottom" constant="-40" id="ums-XU-EHS"/>
+                                    <constraint firstItem="YTG-tA-kj2" firstAttribute="bottom" secondItem="8og-1d-Dhh" secondAttribute="top" id="ums-XU-EHS"/>
                                     <constraint firstItem="Ibt-Mm-EtY" firstAttribute="top" secondItem="Hmo-tB-FCK" secondAttribute="top" constant="10" id="yFx-S7-4jA"/>
                                 </constraints>
                             </scrollView>
