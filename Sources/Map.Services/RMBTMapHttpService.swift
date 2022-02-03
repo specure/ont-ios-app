@@ -10,6 +10,17 @@ import Foundation
 
 class RMBTMapHttpService {
     var debounceTimer:Timer?
+    private let cmsClient = RMBTCmsApiClient.shared
+    
+    func getDefaultDate(completion: @escaping (RMBTMapDate) -> Void ) {
+        cmsClient.getProject { project in
+            guard let project = project, let defaultDate = project.mapbox_actual_date else {
+                return completion(RMBTMapDate.list.first!)
+            }
+            let dateComponents: [String] = defaultDate.components(separatedBy: "-")
+            completion(RMBTMapDate(dateComponents[0], dateComponents[1]))
+        }
+    }
     
     func getLocationsFromQuery(query: String = "", completion: @escaping ([RMBTGeocodingFeature]) -> Void) {
         debounceTimer?.invalidate()

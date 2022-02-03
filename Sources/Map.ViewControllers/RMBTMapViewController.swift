@@ -236,9 +236,14 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
     }
     
     private func initDates() {
-        selectedDateButton.setTitle(selectedDate.monthNameAndYear, for: .normal)
-        selectedDateButton.addTarget(self, action: #selector(showDateSheet), for: .touchUpInside)
-        view.bringSubviewToFront(selectedDateButton)
+        httpService.getDefaultDate { [weak self] defaultDate in
+            guard let self = self else {return}
+            DispatchQueue.main.async {
+                self.selectedDate = defaultDate
+                self.selectedDateButton.addTarget(self, action: #selector(self.showDateSheet), for: .touchUpInside)
+                self.view.bringSubviewToFront(self.selectedDateButton)
+            }
+        }
     }
     
     private func initDetails() {

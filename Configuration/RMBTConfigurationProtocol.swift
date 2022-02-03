@@ -231,6 +231,7 @@ class RMBTConfigurationProtocol {
     var RMBT_CMS_ABOUT_URL: String { return "/" }
     var RMBT_CMS_PRIVACY_URL: String { return "/" }
     var RMBT_CMS_TERMS_URL: String { return "/" }
+    var RMBT_CMS_PROJECTS_URL: String { return "/" }
     
     struct ServerConfig {
         let identifier: String
