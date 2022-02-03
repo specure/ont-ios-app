@@ -9,12 +9,45 @@
 import Foundation
 
 class RMBTCmsApiClient {
+    static let shared = RMBTCmsApiClient()
     
     let config = RMBTConfiguration
+    
+    func getProject(completion: @escaping (RMBTCmsProject?) -> Void) {
+        guard let urlComponents = NSURLComponents(string: "\(config.RMBT_CMS_BASE_URL)/\(config.RMBT_CMS_PROJECTS_URL)") else {
+            return completion(nil)
+        }
+        urlComponents.queryItems = [
+            URLQueryItem(name: "_limit", value: "1"),
+            URLQueryItem(name: "slug", value: config.clientIdentifier)
+        ]
+        guard let url = urlComponents.url else {
+            return completion(nil)
+        }
+        let request = URLRequest(url: url)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                do {
+                    let projects = try JSONDecoder().decode([RMBTCmsProject].self, from: data)
+                    if projects.count > 0 {
+                        completion(projects.first)
+                    } else {
+                        completion(nil)
+                    }
+                } catch let parsingError {
+                    print("Parsing error: \(parsingError)")
+                    completion(nil)
+                }
+            } else if let error = error {
+                print("HTTP Request Failed \(error)")
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
 
     func getPage(route: String, completion: @escaping (RMBTCmsPageProtocol) -> Void ) {
         let url = URL(string: "\(config.RMBT_CMS_BASE_URL)/\(config.RMBT_CMS_PAGES_URL)\(route)")
-        print("url: \(url)")
         var request = URLRequest(url: url!)
         request.setCMSHeaders()
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

@@ -13,7 +13,7 @@ class RMBTStaticPageViewController: UIViewController {
     @IBOutlet weak var contentView:MarkdownView!
     @IBOutlet weak var spinnerView:UIActivityIndicatorView!
 
-    let client = RMBTCmsApiClient()
+    let client = RMBTCmsApiClient.shared
     let css = UIFont.appRegularFontName != nil && UIFont.appRegularFontAsBase64 != nil
         ? [
             "@font-face { font-family: '\(UIFont.appRegularFontName!)'; src: url(data:font/ttf;base64,\(UIFont.appRegularFontAsBase64!)) format('truetype'); }",
