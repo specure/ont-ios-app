@@ -59,7 +59,7 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
             switchVisibleLayer()
         }
     } // Which regional unit we show depending on the zoom level
-    var selectedDate = RMBTMapDate.list[1] {
+    var selectedDate = RMBTMapDate.list[0] {
         didSet {
             selectedDateButton.setTitle(selectedDate.monthNameAndYear, for: .normal)
             switchVisibleLayer()
@@ -236,6 +236,7 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
     }
     
     private func initDates() {
+        selectedDateButton.setTitle(selectedDate.monthNameAndYear, for: .normal) // To show the current date as a placeholder
         httpService.getDefaultDate { [weak self] defaultDate in
             guard let self = self else {return}
             DispatchQueue.main.async {
