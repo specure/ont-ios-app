@@ -655,7 +655,7 @@ extension RMBTHistoryResult {
     func timeString() -> String {
         guard let timestamp = self.timestamp else { return "" }
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH.mm"
+        dateFormatter.dateFormat = "HH:mm"
         return dateFormatter.string(from: timestamp)
     }
 }
