@@ -138,10 +138,7 @@ class RMBTHistoryResultDetailsViewController: UITableViewController {
                 // cell.textLabel?.lineBreakMode = NSLineBreakMode.ByTruncatingMiddle
                 
                 let valueString = item.convertValueToString()
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd.MM.yyyy, HH:mm:ss"
-                let rawDate = dateFormatter.date(from:valueString)
-                if let _ = rawDate {
+                if indexPath.row == 1 {
                     cell.detailTextLabel?.text = "\(historyResult.dateString()), \(historyResult.timeString())"
                 } else if valueString.contains("UTC+") || valueString.contains("UTC-") {
                     let hourOffset = TimeZone.current.secondsFromGMT()/3600
