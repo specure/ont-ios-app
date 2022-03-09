@@ -42,23 +42,45 @@ class RMBTNetworkInfoViewController: RMBTBottomSheetViewController {
         cell.addEntry(networkInfo?.location ?? networkInfo?.networkLocation, titled: L("intro.popup.location.position"), image: nil)
     }
     
+    private func colorsForIps(_ internalIp: String?, _ externalIp: String?) -> (color: UIColor, titleColor: UIColor) {
+        let titleColor: UIColor
+        let color: UIColor
+        if let internalIp = internalIp,
+           let externalIp = externalIp,
+           externalIp == internalIp {
+            color = .available
+            titleColor = .titleAvailable
+        } else if let internalIp = internalIp,
+           let externalIp = externalIp,
+           externalIp != internalIp {
+            color = .semiAvailable
+            titleColor = .titleSemiAvailable
+        } else {
+            color = .notAvailable
+            titleColor = .titleNotAvailable
+        }
+        return (color, titleColor)
+    }
+    
     private func setIPv4Data(for cell: RMBTNetworkInfoDetailsCell) {
         cell.addEntry(ipInfo?.ipv4.internalIp ?? L("intro.popup.ip.no-ip-text"), titled: L("intro.popup.ip.private-address"), image: nil)
         cell.addEntry(ipInfo?.ipv4.externalIp ?? L("intro.popup.ip.no-ip-text"), titled: L("intro.popup.ip.public-address"), image: nil)
-        cell.toggleIPVButton(isHidden: false, titled: "IPv4", color: nil, titleColor: nil)
+        let colors = colorsForIps(ipInfo?.ipv4.internalIp, ipInfo?.ipv4.externalIp)
+        cell.toggleIPVButton(isHidden: false, titled: "IPv4", color: colors.color, titleColor: colors.titleColor)
     }
     
     private func setIPv6Data(for cell: RMBTNetworkInfoDetailsCell) {
         cell.addEntry(ipInfo?.ipv6.internalIp ?? ipInfo?.ipv6.externalIp ?? L("intro.popup.ip.no-ip-text"), titled: nil, image: nil)
-        cell.toggleIPVButton(isHidden: false, titled: "IPv6", color: UIColor(rgb: 0x6dd400), titleColor: .white)
+        let colors = colorsForIps(ipInfo?.ipv6.internalIp, ipInfo?.ipv6.externalIp)
+        cell.toggleIPVButton(isHidden: false, titled: "IPv6", color: colors.color, titleColor: colors.titleColor)
     }
 }
 
-extension RMBTNetworkInfoViewController: UITableViewDataSource, UITableViewDelegate{
+extension RMBTNetworkInfoViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let rowType = RMBTNetworkInfoRow(rawValue: indexPath.row)
-        switch(rowType) {
+        switch rowType {
         case .IPv4:
             return 110
         default:
@@ -73,7 +95,7 @@ extension RMBTNetworkInfoViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RMBTNetworkInfoDetailsCell.id) as! RMBTNetworkInfoDetailsCell
         let rowType = RMBTNetworkInfoRow(rawValue: indexPath.row)
-        switch(rowType) {
+        switch rowType {
         case .networkTypeAndName:
             setNetworkTypeAndNameData(for: cell)
         case .IPv4:
@@ -88,4 +110,14 @@ extension RMBTNetworkInfoViewController: UITableViewDataSource, UITableViewDeleg
         return cell
     }
     
+}
+
+private extension UIColor {
+    static let available = UIColor(red: 89.0 / 255.0, green: 178.0 / 255.0, blue: 0, alpha: 1.0)
+    static let notAvailable = UIColor(red: 245.0 / 255.0, green: 0.0 / 255.0, blue: 28.0/255.0, alpha: 1.0)
+    static let semiAvailable = UIColor(red: 255.0 / 255.0, green: 186.0 / 255.0, blue: 0, alpha: 1.0)
+    
+    static let titleAvailable = UIColor.black
+    static let titleNotAvailable = UIColor.white
+    static let titleSemiAvailable = UIColor.black
 }
