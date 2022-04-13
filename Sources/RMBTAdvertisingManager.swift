@@ -18,8 +18,11 @@ class RMBTAdvertisingManager: NSObject {
     }
     static let shared = RMBTAdvertisingManager()
     
-    var adMobBannerView: GADBannerView = GADBannerView(adSize: kGADAdSizeBanner)
-    var adMobBigBannerView: GADBannerView = GADBannerView(adSize: kGADAdSizeMediumRectangle)
+// TODO: Solve for 2.x versions
+//    var adMobBannerView: GADBannerView = GADBannerView(adSize: kGADAdSizeBanner)
+//    var adMobBigBannerView: GADBannerView = GADBannerView(adSize: kGADAdSizeMediumRectangle)
+    var adMobBannerView: GADBannerView = GADBannerView(adSize: GADAdSize())
+    var adMobBigBannerView: GADBannerView = GADBannerView(adSize: GADAdSize())
     
     var state = State.unknowed
     
@@ -33,7 +36,9 @@ class RMBTAdvertisingManager: NSObject {
     }
     
     func configureAdMobBanner(_ adUnitID: String, appId: String, rootViewController: UIViewController?) {
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [(kGADSimulatorID as! String)]
+// TODO: Solve for 2.x versions
+//        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [(kGADSimulatorID as! String)]
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [""]
         adMobBannerView.adUnitID = adUnitID
         adMobBannerView.rootViewController = rootViewController
         adMobBigBannerView.adUnitID = adUnitID
