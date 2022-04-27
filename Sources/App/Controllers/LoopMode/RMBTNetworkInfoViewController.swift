@@ -70,7 +70,7 @@ class RMBTNetworkInfoViewController: RMBTBottomSheetViewController {
     }
     
     private func setIPv6Data(for cell: RMBTNetworkInfoDetailsCell) {
-        cell.addEntry(ipInfo?.ipv6.internalIp ?? ipInfo?.ipv6.externalIp ?? L("intro.popup.ip.no-ip-text"), titled: nil, image: nil)
+        cell.addEntry(ipInfo?.ipv6.externalIp ?? ipInfo?.ipv6.internalIp ?? L("intro.popup.ip.no-ip-text"), titled: nil, image: nil)
         let colors = colorsForIps(ipInfo?.ipv6.internalIp, ipInfo?.ipv6.externalIp)
         cell.toggleIPVButton(isHidden: false, titled: "IPv6", color: colors.color, titleColor: colors.titleColor)
     }
