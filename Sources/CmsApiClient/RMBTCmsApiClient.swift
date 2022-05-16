@@ -47,7 +47,8 @@ class RMBTCmsApiClient {
     }
 
     func getPage(route: String, completion: @escaping (RMBTCmsPageProtocol) -> Void ) {
-        let url = URL(string: "\(config.RMBT_CMS_BASE_URL)/\(config.RMBT_CMS_PAGES_URL)\(route)")
+        let encodedRoute = route.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = URL(string: "\(config.RMBT_CMS_BASE_URL)/\(config.RMBT_CMS_PAGES_URL)\(encodedRoute!)")
         var request = URLRequest(url: url!)
         request.setCMSHeaders()
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
