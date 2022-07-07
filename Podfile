@@ -18,7 +18,7 @@ abstract_target 'All' do
   pod 'FacebookSDK'
   pod 'FacebookCore'
   pod 'Google-Mobile-Ads-SDK'
-  pod 'Mapbox-iOS-SDK', '~> 6.3.0'
+  pod 'MapboxMaps', '10.6.0'
   pod 'MarkdownView', '~> 1.8.3'
   pod 'DropDown'
   

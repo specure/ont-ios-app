@@ -270,6 +270,10 @@ class RMBTConfigurationProtocol {
         return ""
     }
     
+    var RMBT_MAP_ACCESS_TOKEN: String {
+        return ""
+    }
+    
     var RMBT_USE_CUSTOM_FONT: Bool {
         return false
     }

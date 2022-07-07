@@ -12,7 +12,7 @@ struct RMBTMapTechnology {
     
     static var list: [RMBTMapTechnology] {
         return [
-            RMBTMapTechnology("ALL", color: RMBTColorManager.mapSelectionColor, textColor: UIColor.white, label: L("map.technology.all")),
+            RMBTMapTechnology("ALL", color: UIColor(rgb: 0x4069F2), textColor: UIColor.white, label: L("map.technology.all")),
             RMBTMapTechnology("2G", color: UIColor(red: 0.97, green: 0.71, blue: 0, alpha: 1), textColor: UIColor.black, label: nil),
             RMBTMapTechnology("3G", color: UIColor(red: 0.43, green: 0.83, blue: 0, alpha: 1), textColor: UIColor.black, label: nil),
             RMBTMapTechnology("4G", color: UIColor(red: 0.27, green: 0.84, blue: 0.71, alpha: 1), textColor: UIColor.black, label: nil),

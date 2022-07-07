@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Mapbox
+import MapboxMaps
 
 protocol RMBTMapViewControllerDelegate {
     func setOperator(_ op: RMBTMapOperator)
@@ -46,7 +46,7 @@ extension RMBTMapViewController: RMBTMapViewControllerDelegate {
     }
     
     @objc func showOperatorSheet() {
-        openBottomSheet(with: .operators, title: L("map.title.operators"), height: 300)
+        openBottomSheet(with: .operators, title: L("map.title.operators"), height: RMBTMapDetailsRow.height * CGFloat(operators.count + 1))
     }
     
     @objc func showDateSheet() {
@@ -57,15 +57,16 @@ extension RMBTMapViewController: RMBTMapViewControllerDelegate {
         unfocusSearchField()
         selectedFeatureDetails = []
         let spot = sender.location(in: mapView)
-        let features = mapView.visibleFeatures(at: spot, styleLayerIdentifiers: Set([selectedLayerId]))
-        if let feature = features.first {
-            getFeatureDetails(feature)
+        mapView.mapboxMap.queryRenderedFeatures(at: spot, options:RenderedQueryOptions(layerIds: [selectedLayerId], filter: nil), completion: { [weak self] result in
+            if let features = try? result.get(), let feature = features.first {
+                self?.getFeatureDetails(feature)
 
-            if selectedFeatureDetails.count > 1 {
-                mapView.setCenter(feature.coordinate, zoomLevel: mapView.zoomLevel, animated: true)
-                openBottomSheet(with: .details, title: L("map.title.details"), height: RMBTMapDetailsRow.height * CGFloat(selectedFeatureDetails.count + 1)) // Height including the header row
+                if let featureCount = self?.selectedFeatureDetails.count, featureCount > 1, let camera = self?.mapView.mapboxMap.camera(for: feature.feature.geometry!, padding: .zero, bearing: 0, pitch: 0) {
+                    self?.mapView.mapboxMap.setCamera(to: CameraOptions(center: camera.center, zoom: self?.mapView.cameraState.zoom ?? 0))
+                    self?.openBottomSheet(with: .details, title: L("map.title.details"), height: RMBTMapDetailsRow.height * CGFloat(featureCount + 1)) // Height including the header row
+                }
             }
-        }
+        })
     }
     
     @objc func switchTechnology(sender: RMBTMapTechnologyButton?) {
@@ -88,12 +89,12 @@ extension RMBTMapViewController: RMBTMapViewControllerDelegate {
         searchField.endEditing(true)
     }
     
-    private func getFeatureDetails(_ feature: MGLFeature) {
-        if let name = feature.attribute(forKey: "NAME") as? String {
+    private func getFeatureDetails(_ feature: QueriedFeature) {
+        if let name = feature.feature.properties?["NAME"]??.rawValue as? String {
             var label: String?
-            if config.mapRegionalPrefix(by: mapView.zoomLevel) == .municipality {
+            if config.mapRegionalPrefix(by: mapView.mapboxMap.cameraState.zoom) == .municipality {
                 label = L("map.popup.municipality")
-            } else if config.mapRegionalPrefix(by: mapView.zoomLevel) == .county {
+            } else if config.mapRegionalPrefix(by: mapView.mapboxMap.cameraState.zoom) == .county {
                 label = L("map.popup.county")
             }
             if label != nil {
@@ -103,13 +104,13 @@ extension RMBTMapViewController: RMBTMapViewControllerDelegate {
             }
         }
         
-        if let count = feature.attribute(forKey: getPropertyKey(with: "COUNT")) {
+        if let count = feature.feature.properties?[getPropertyKey(with: "COUNT")]??.rawValue as? Double {
             selectedFeatureDetails.append(
-                RMBTMapDetailsRow(label: L("map.popup.count"), value: "\(count)")
+                RMBTMapDetailsRow(label: L("map.popup.count"), value: "\(Int(count))")
             )
         }
 
-        if let download = feature.attribute(forKey: getPropertyKey(with: "DOWNLOAD")) as? Double {
+        if let download = feature.feature.properties?[getPropertyKey(with: "DOWNLOAD")]??.rawValue as? Double {
             selectedFeatureDetails.append(
                 RMBTMapDetailsRow(
                     label: L("map.popup.download"),
@@ -118,7 +119,7 @@ extension RMBTMapViewController: RMBTMapViewControllerDelegate {
             )
         }
         
-        if let upload = feature.attribute(forKey: getPropertyKey(with: "UPLOAD")) as? Double {
+        if let upload = feature.feature.properties?[getPropertyKey(with: "UPLOAD")]??.rawValue as? Double {
             selectedFeatureDetails.append(
                 RMBTMapDetailsRow(
                     label: L("map.popup.upload"),
@@ -127,7 +128,7 @@ extension RMBTMapViewController: RMBTMapViewControllerDelegate {
             )
         }
         
-        if let ping = feature.attribute(forKey: getPropertyKey(with: "PING")) as? Double {
+        if let ping = feature.feature.properties?[getPropertyKey(with: "PING")]??.rawValue as? Double {
             selectedFeatureDetails.append(
                 RMBTMapDetailsRow(
                     label: L("map.popup.ping"),
