@@ -20,13 +20,14 @@ import Foundation
 import BCGenieEffect
 import RMBTClient
 import CoreLocation
-import Mapbox
+import MapboxMaps
 import DropDown
 
-class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextFieldDelegate {
+class RMBTMapViewController: TopLevelViewController, UITextFieldDelegate {
+    
     let httpService = RMBTMapHttpService()
     let dropdown = DropDown()
-    var mapView: MGLMapView!
+    var mapView: MapView!
     var config: RMBTConfigurationProtocol!
     var searchResults: [RMBTGeocodingFeature] = []
     var isFiltersViewOpen = false {
@@ -73,18 +74,14 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
                 }
             })
             initMiniTechnologies()
-            DispatchQueue.main.async {
-                self.switchVisibleLayer()
-            }
+            switchVisibleLayer()
         }
     }
     var selectedOperator = RMBTMapOperator.list.first! {
         didSet {
             selectedOperatorButton.setTitle(selectedOperator.longLabel, for: .normal)
             selectedOperatorLabel.text = selectedOperator.longLabel
-            DispatchQueue.main.async {
-                self.switchVisibleLayer()
-            }
+            switchVisibleLayer()
         }
     }
     var selectedFeatureDetails: [ RMBTMapDetailsRow ] = []
@@ -94,6 +91,7 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
     var selectedLayerId: String {
         return "\(selectedRegionalPrefix.rawValue)-\(selectedDate.code)-\(selectedTech.name)-\(selectedOperator.name)"
     }
+    var prevSelectedLayerId: String?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -116,7 +114,6 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
         initMiniTechnologies()
         initOperators()
         initDates()
-        initDetails()
         rearrangeWidgets()
     }
     
@@ -128,18 +125,6 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         unfocusSearchField()
     }
-    
-    func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
-        switchVisibleLayer()
-    }
-    
-    func mapView(_ mapView: MGLMapView, regionDidChangeWith reason: MGLCameraChangeReason, animated: Bool) {
-        let prevRegionalPrefix = self.selectedRegionalPrefix
-        let newRegionalPrefix = config.mapRegionalPrefix(by: mapView.zoomLevel)
-        if prevRegionalPrefix != newRegionalPrefix {
-            self.selectedRegionalPrefix = newRegionalPrefix
-        }
-    }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -147,11 +132,31 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
     }
     
     private func initMap() {
-        mapView = MGLMapView(frame: view.bounds, styleURL: URL(string: config.RMBT_MAPBOX_BASIC_STYLE_URL))
+        ResourceOptionsManager.default.resourceOptions.accessToken = config.RMBT_MAP_ACCESS_TOKEN
+        mapView = MapView(
+            frame: view.bounds,
+            mapInitOptions: MapInitOptions(
+                cameraOptions: CameraOptions(
+                    center: CLLocationCoordinate2D(latitude: config.RMBT_MAP_INITIAL_LAT, longitude: config.RMBT_MAP_INITIAL_LNG),
+                    zoom: Double(config.RMBT_MAP_INITIAL_ZOOM)
+                ),
+                styleURI: StyleURI(rawValue: config.RMBT_MAPBOX_BASIC_STYLE_URL)
+            )
+        )
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapView.setCenter(CLLocationCoordinate2D(latitude: config.RMBT_MAP_INITIAL_LAT, longitude: config.RMBT_MAP_INITIAL_LNG), zoomLevel: Double(config.RMBT_MAP_INITIAL_ZOOM), animated: false)
-        mapView.delegate = self
-        mapView.maximumZoomLevel = 15
+        
+        mapView.mapboxMap.onEvery(.cameraChanged, handler: { [weak self] (event) in
+            guard let _ = event.data as? [String: Any] else { return }
+            let prevRegionalPrefix = self?.selectedRegionalPrefix
+            let newRegionalPrefix = self?.config.mapRegionalPrefix(by: Double(self?.mapView.cameraState.zoom ?? 0))
+            if prevRegionalPrefix != newRegionalPrefix, newRegionalPrefix != nil {
+                self?.selectedRegionalPrefix = newRegionalPrefix!
+            }
+        })
+        
+        mapView.gestures.delegate = self
+        mapView.gestures?.options.pinchRotateEnabled = false
+        
         view.addSubview(mapView)
     }
     
@@ -171,11 +176,12 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
                 if let bounds = location.mapView {
                     let sw = CLLocationCoordinate2D(latitude: bounds.south, longitude: bounds.west)
                     let ne = CLLocationCoordinate2D(latitude: bounds.north, longitude: bounds.east)
-                    mapView.setVisibleCoordinateBounds( MGLCoordinateBounds(sw: sw, ne: ne), animated: true)
+                    let camera = mapView.mapboxMap.camera(for: CoordinateBounds(southwest: sw, northeast: ne), padding: .zero, bearing: 0, pitch: 0)
+                    mapView.mapboxMap.setCamera(to: CameraOptions(center: camera.center, zoom: camera.zoom))
                 } else {
                     let position = location.position
                     let center = CLLocationCoordinate2D(latitude: position.lat, longitude: position.lng)
-                    mapView.setCenter(center, zoomLevel: mapView.zoomLevel, animated: true)
+                    mapView.mapboxMap.setCamera(to: CameraOptions(center: center, zoom: mapView.mapboxMap.cameraState.zoom))
                 }
                 searchField.text = item
                 unfocusSearchField()
@@ -247,14 +253,6 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
         }
     }
     
-    private func initDetails() {
-        let singleTap = UITapGestureRecognizer(target: self, action: #selector(showDetailsSheet))
-        for recognizer in mapView.gestureRecognizers! where recognizer is UITapGestureRecognizer {
-            singleTap.require(toFail: recognizer)
-        }
-        mapView.addGestureRecognizer(singleTap)
-    }
-    
     private func rearrangeWidgets() {
         technologiesView.isHidden = !isFiltersViewOpen
         miniTechnologiesView.isHidden = isFiltersViewOpen
@@ -264,18 +262,31 @@ class RMBTMapViewController: TopLevelViewController, MGLMapViewDelegate, UITextF
     }
     
     private func switchVisibleLayer() {
-        guard let style = mapView.style else {
-            return
-        }
-        style.layers.forEach({layer in
-            let prefixString = String(layer.identifier.split(separator: "-")[0])
-            // Hide all layers that have a regional prefix, are not selected and are not regional borders
-            if let prefix = RMBTMapRegionalPrefix(rawValue: prefixString), RMBTMapRegionalPrefix.allCases.contains(prefix), layer.identifier != selectedLayerId, !layer.identifier.contains("Borders") {
-                layer.isVisible = false
-            }
+        let style = mapView.mapboxMap.style
+        try? style.updateLayer(withId: selectedLayerId, type: LineLayer.self, update: {layer in
+            layer.visibility = .constant(.visible)
         })
-        if let layer = style.layer(withIdentifier: selectedLayerId), !layer.isVisible {
-            layer.isVisible = true
+        if let prevSelectedLayerId = prevSelectedLayerId {
+            try? style.updateLayer(withId: prevSelectedLayerId, type: LineLayer.self, update: {layer in
+                layer.visibility = .constant(.none)
+            })
         }
+        prevSelectedLayerId = selectedLayerId
+    }
+}
+
+extension RMBTMapViewController: GestureManagerDelegate {
+    
+    func gestureManager(_ gestureManager: GestureManager, didBegin gestureType: GestureType) {
+        
+    }
+    
+    func gestureManager(_ gestureManager: GestureManager, didEnd gestureType: GestureType, willAnimate: Bool) {
+        guard gestureType == .singleTap else {return}
+        showDetailsSheet(sender: gestureManager.singleTapGestureRecognizer as! UITapGestureRecognizer)
+    }
+    
+    func gestureManager(_ gestureManager: GestureManager, didEndAnimatingFor gestureType: GestureType) {
+        
     }
 }

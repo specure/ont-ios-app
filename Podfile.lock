@@ -129,9 +129,15 @@ PODS:
   - KINWebBrowser (1.3.2):
     - ARChromeActivity (= 1.0.5)
     - TUSafariActivity (= 1.0.4)
-  - Mapbox-iOS-SDK (6.3.0):
-    - MapboxMobileEvents (~> 0.10.4)
-  - MapboxMobileEvents (0.10.14)
+  - MapboxCommon (22.0.0)
+  - MapboxCoreMaps (10.6.0):
+    - MapboxCommon (~> 22.0)
+  - MapboxMaps (10.6.0):
+    - MapboxCommon (= 22.0.0)
+    - MapboxCoreMaps (= 10.6.0)
+    - MapboxMobileEvents (= 1.0.8)
+    - Turf (~> 2.0)
+  - MapboxMobileEvents (1.0.8)
   - MarkdownView (1.8.3)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
@@ -156,6 +162,7 @@ PODS:
     - RealmSwift
     - XCGLogger
   - SVProgressHUD (2.2.5)
+  - Turf (2.4.0)
   - TUSafariActivity (1.0.4)
   - XCGLogger (7.0.1):
     - XCGLogger/Core (= 7.0.1)
@@ -173,7 +180,7 @@ DEPENDENCIES:
   - Google-Mobile-Ads-SDK
   - GoogleMaps
   - KINWebBrowser (from `https://github.com/sglushchenko/KINWebBrowser`, branch `master`)
-  - Mapbox-iOS-SDK (~> 6.3.0)
+  - MapboxMaps (= 10.6.0)
   - MarkdownView (~> 1.8.3)
   - RMBTClient (from `https://github.com/specure/ont-ios-client.git`, branch `main`)
   - SVProgressHUD
@@ -205,7 +212,9 @@ SPEC REPOS:
     - GoogleMaps
     - GoogleUserMessagingPlatform
     - GoogleUtilities
-    - Mapbox-iOS-SDK
+    - MapboxCommon
+    - MapboxCoreMaps
+    - MapboxMaps
     - MapboxMobileEvents
     - MarkdownView
     - nanopb
@@ -215,6 +224,7 @@ SPEC REPOS:
     - Realm
     - RealmSwift
     - SVProgressHUD
+    - Turf
     - TUSafariActivity
     - XCGLogger
 
@@ -259,8 +269,10 @@ SPEC CHECKSUMS:
   GoogleUserMessagingPlatform: ab890ce5f6620f293a21b6bdd82e416a2c73aeca
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   KINWebBrowser: 4efbca72265abd32457408009a02d52de910a82b
-  Mapbox-iOS-SDK: 2563ed87ead6ec08f1c2090873977b8a7be335a8
-  MapboxMobileEvents: 5a172cc9bbf8ac0e45ba86095cbee685ede248cc
+  MapboxCommon: 8b10731406d2e4472d52ae6ec3679e6e5c4bd55e
+  MapboxCoreMaps: 2019935caed7e56be1417ff70d3ad0c0cbf0264e
+  MapboxMaps: e078cc1343a0513174869a5e16ae9a18d3977252
+  MapboxMobileEvents: febdd92835daa258ca1c1faad0821c0b3394ef40
   MarkdownView: 44a260beec01538e6cdbbce9c2f631b1f3634907
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
@@ -270,9 +282,10 @@ SPEC CHECKSUMS:
   RealmSwift: c2a635212400923edd3f828b8a37d55d3eb31863
   RMBTClient: 7a3f345c6be5a9b420b60f68efd72c1e7566f1eb
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  Turf: 60b93cfdc62758526bc7bf1ef191a829aeb9694d
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   XCGLogger: 1943831ef907df55108b0b18657953f868de973b
 
-PODFILE CHECKSUM: d3388b36628c5a812f707d667202a336dbeac8db
+PODFILE CHECKSUM: aca0112877151f4f40cc13b2c14d9441fce38bb5
 
 COCOAPODS: 1.11.3

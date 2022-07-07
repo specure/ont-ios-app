@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Mapbox
 
 enum RMBTMapBottomSheetView {
     case operators
@@ -23,6 +22,7 @@ class RMBTMapBottomSheetViewController: RMBTBottomSheetViewController, UITableVi
     @IBOutlet weak var datePickerView: UIPickerView!
     @IBOutlet weak var detailsView: UITableView!
     @IBOutlet weak var detailsViewHeightContraint: NSLayoutConstraint!
+    @IBOutlet weak var operatorsViewHeightConstraint: NSLayoutConstraint!
     
     var selectedDate: RMBTMapDate!
     var selectedOperator: RMBTMapOperator!
@@ -45,6 +45,7 @@ class RMBTMapBottomSheetViewController: RMBTBottomSheetViewController, UITableVi
         guard visibleView == .operators else {
             return
         }
+        operatorsViewHeightConstraint.constant = sheetHeight - RMBTMapDetailsRow.height - 1
         for (index, op) in operators.enumerated() {
             let button: RMBTMapOperatorButton = RMBTMapOperatorButton(for: op, within: operatorsView)
             if op.name == selectedOperator.name {

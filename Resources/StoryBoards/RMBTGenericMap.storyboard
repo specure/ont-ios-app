@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="eh2-dQ-YhE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="eh2-dQ-YhE">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -296,6 +297,7 @@
                         <outlet property="detailsView" destination="oly-SC-48i" id="z4I-NI-wuK"/>
                         <outlet property="detailsViewHeightContraint" destination="wmm-vI-7Pi" id="wYW-2g-wtS"/>
                         <outlet property="operatorsView" destination="YSc-ke-PKk" id="bTB-4u-KHr"/>
+                        <outlet property="operatorsViewHeightConstraint" destination="htV-hc-6qn" id="pMo-mI-xJM"/>
                         <outlet property="overlayView" destination="Nql-w3-IXu" id="cva-Ku-Aiq"/>
                         <outlet property="sheetHeightConstraint" destination="upL-qx-fIN" id="AD0-ZM-Tig"/>
                         <outlet property="sheetView" destination="Dpl-Ay-9Mu" id="K1d-ia-OOF"/>
