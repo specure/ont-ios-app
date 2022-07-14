@@ -8,6 +8,7 @@
 
 import Foundation
 import RMBTClient
+import Sentry
 
 protocol ManageMeasurement: AnyObject, RMBTClientDelegate, ManageMeasurementView {
     //
@@ -158,6 +159,12 @@ extension ManageMeasurement {
     func qosMeasurementFinished(_ client: RMBTClient, type: QosMeasurementType) {
         //
         manageViewAfterQosFinishedTest(type: type)
+    }
+    
+// MARK: Errors
+    
+    func didCatchError(_ error: Error) {
+        SentrySDK.capture(error: error)
     }
     
 // Mark : Helpers
