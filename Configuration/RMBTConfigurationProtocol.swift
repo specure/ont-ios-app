@@ -281,4 +281,8 @@ class RMBTConfigurationProtocol {
     var RMBT_CUSTOM_FONT_NAME: String? {
         return nil
     }
+    
+    var SENTRY_DSN: String? {
+        return nil
+    }
 }

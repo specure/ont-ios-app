@@ -21,6 +21,7 @@ abstract_target 'All' do
   pod 'MapboxMaps', '10.6.0'
   pod 'MarkdownView', '~> 1.8.3'
   pod 'DropDown'
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.20.0'
   
   # now in the folder Vendor
   #pod 'SWRevealViewController', '~> 2.3.0' # TODO: not possible to use the version from cocoapods because tb changed something in the implementation...

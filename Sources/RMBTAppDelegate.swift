@@ -22,6 +22,7 @@ import RealmSwift
 //import FacebookCore
 import FBSDKCoreKit
 import GoogleMobileAds
+import Sentry
 
 //1/9dd6ddfbc5417f23cbb6576769c23c040caebecd
 ///
@@ -35,6 +36,11 @@ final class RMBTAppDelegate: UIResponder, UIApplicationDelegate {
     
     ///
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        SentrySDK.start { options in
+            options.dsn = RMBTConfiguration.SENTRY_DSN
+        }
+        
         if RMBTSettings.sharedSettings.isAnalyticsEnabled {
             GADMobileAds.sharedInstance().start(completionHandler: nil)
             FirebaseApp.configure()
