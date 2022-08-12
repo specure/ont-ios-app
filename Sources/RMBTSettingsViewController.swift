@@ -300,11 +300,15 @@ class RMBTSettingsViewController: TopLevelTableViewController {
             }
         }
         
-        let ipv4Only = RMBTSettingsItem()
-        ipv4Only.title = NSLocalizedString("RMBT-SETTINGS-IPV4ONLY", comment: "IPv4 Only")
-        ipv4Only.value = RMBTSettings.sharedSettings.nerdModeForceIPv4
-        ipv4Only.identifier = .ipv4Only
-        generalSection.items.append(ipv4Only)
+        if RMBTConfiguration.RMBT_IPV4_SWITCH_VISIBLE {
+            let ipv4Only = RMBTSettingsItem()
+            ipv4Only.title = NSLocalizedString("RMBT-SETTINGS-IPV4ONLY", comment: "IPv4 Only")
+            ipv4Only.value = RMBTSettings.sharedSettings.nerdModeForceIPv4
+            ipv4Only.identifier = .ipv4Only
+            generalSection.items.append(ipv4Only)
+        } else {
+            RMBTSettings.sharedSettings.nerdModeForceIPv4 = false
+        }
         
 //        let language = RMBTSettingsItem()
 //        language.title = NSLocalizedString("RMBT-SETTINGS-LANGUAGE", comment: "Language")
