@@ -306,8 +306,6 @@ class RMBTSettingsViewController: TopLevelTableViewController {
             ipv4Only.value = RMBTSettings.sharedSettings.nerdModeForceIPv4
             ipv4Only.identifier = .ipv4Only
             generalSection.items.append(ipv4Only)
-        } else {
-            RMBTSettings.sharedSettings.nerdModeForceIPv4 = false
         }
         
 //        let language = RMBTSettingsItem()
