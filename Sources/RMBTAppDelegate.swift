@@ -47,6 +47,10 @@ final class RMBTAppDelegate: UIResponder, UIApplicationDelegate {
             LogConfig.initLoggingFramework()
         }
         
+        if !RMBTConfiguration.RMBT_IPV4_SWITCH_VISIBLE {
+            RMBTSettings.sharedSettings.nerdModeForceIPv4 = false
+        }
+        
         self.initialize()
         window?.makeKeyAndVisible()
         return true

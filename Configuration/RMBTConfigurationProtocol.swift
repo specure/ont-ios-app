@@ -88,6 +88,9 @@ class RMBTConfigurationProtocol {
     var RMBT_CHECK_IPV4_URL: String {
         return "\(RMBT_IPV4_URL_HOST)\(RMBT_CONTROL_SERVER_PATH)"
     }
+    var RMBT_IPV4_SWITCH_VISIBLE: Bool {
+        return true
+    }
     
     // MARK: - Other URLs used in the app
     
